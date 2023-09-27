@@ -1,0 +1,8 @@
+all:
+  children:
+    arvan_servers:
+      hosts:
+        arvan2:
+          ansible_host: 5.34.202.126
+          ansible_user: ubuntu
+          ansible_port: 22

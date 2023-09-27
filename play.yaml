@@ -1,0 +1,7 @@
+- name: install and configuration nginx
+  hosts: arvan2
+  gather_facts: true
+  become: true
+  serial: 1
+  roles:
+    - { role: preparing }

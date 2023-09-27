@@ -1,0 +1,7 @@
+---
+# handlers file for preparing
+- name: iptables_service
+  service:
+    name: iptables
+    state: restarted
+    enabled: yes

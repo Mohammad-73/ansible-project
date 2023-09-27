@@ -1,0 +1,11 @@
+*filter
+:INPUT DROP [192:21186]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A INPUT -p tcp -m tcp --dport {{ansible_port}} -j ACCEPT
+{% if inventory_hostname in groups['arvan_servers'] %}
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 8090 -j ACCEPT
+{% endif %}
+COMMIT

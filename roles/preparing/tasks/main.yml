@@ -1,0 +1,49 @@
+---
+# tasks file for preparing
+- name: update and upgrade os
+  #become: true
+  ansible.builtin.apt:
+    update_cache: yes
+    #upgrade: safe
+    autoclean: yes
+    autoremove: yes
+  delegate_to: localhost
+
+#- name: Set a hostname
+#  ansible.builtin.hostname:
+#    name: "{{ inventory_hostname }}"
+
+- name: Set ubuntu public key
+  ansible.posix.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', '/home/mohammad/.ssh/id_rsa.pub') }}"
+
+#- name: Add line in file(bad practice)
+# shell: echo Hi >> ~/test.txt
+
+- name: Add line in file(good practice)
+  ansible.builtin.lineinfile:
+    path: /home/ubuntu/test.txt
+    line: hi
+    create: yes
+
+- name: Install a list of packages
+  ansible.builtin.apt:
+    pkg:
+      - vim
+      - iotop
+      - net-tools
+      - htop
+      - bash-completion
+      - iptables-persistent
+      - nmap
+
+- name: iptables rules
+  ansible.builtin.template:
+    src: iptables-config.j2
+    dest: /etc/iptables/rules.v4
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  notify: iptables_service
